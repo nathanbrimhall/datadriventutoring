@@ -1,0 +1,33 @@
+services:
+  app:
+    build: .
+    restart: unless-stopped
+    env_file: .env
+    environment:
+      HOST: 0.0.0.0
+      PORT: 3000
+      DATA_DIR: /data
+      PUBLIC_URL: ${PUBLIC_URL:?Set PUBLIC_URL to your HTTPS address}
+    volumes:
+      - progresspoint-data:/data
+    expose:
+      - "3000"
+  web:
+    image: caddy:2-alpine
+    restart: unless-stopped
+    environment:
+      SITE_ADDRESS: ${SITE_ADDRESS:?Set SITE_ADDRESS to your domain}
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy-data:/data
+      - caddy-config:/config
+    depends_on:
+      app:
+        condition: service_healthy
+volumes:
+  progresspoint-data:
+  caddy-data:
+  caddy-config:

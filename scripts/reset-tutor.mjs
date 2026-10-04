@@ -1,0 +1,12 @@
+import { resolve,join } from 'node:path';
+import { writeFileSync,existsSync } from 'node:fs';
+import { openStore } from '../lib/store.mjs';
+import { token,hash } from '../lib/domain.mjs';
+const directory=resolve(process.env.DATA_DIR||'.data');
+if(!existsSync(join(directory,'tutoring.sqlite')))throw new Error('No database found. Start ProgressPoint first.');
+const store=openStore(directory),key=token();
+store.transaction(()=>{store.setConfig('adminHash',hash(key));store.db.prepare("DELETE FROM sessions WHERE role='tutor'").run();});
+const file=join(directory,'tutor-access.txt');
+writeFileSync(file,(process.env.PUBLIC_URL||'http://localhost:'+(process.env.PORT||3000))+'/#access='+key+'\n',{mode:0o600});
+store.db.close();
+console.log('Tutor access replaced. Open the new link in '+file+'. Previous tutor links and sessions are revoked.');

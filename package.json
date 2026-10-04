@@ -1,0 +1,23 @@
+{
+  "name": "progresspoint",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "engines": {
+    "node": ">=24.0.0"
+  },
+  "scripts": {
+    "start": "node --env-file-if-exists=.env server.mjs",
+    "dev": "node --watch --env-file-if-exists=.env server.mjs",
+    "test": "node --test tests/*.test.mjs",
+    "test:browser": "node tests/browser.mjs && node tests/assignment-browser.mjs",
+    "backup": "node --env-file-if-exists=.env scripts/backup.mjs"
+  },
+  "dependencies": {
+    "@cortex-js/compute-engine": "0.140.0",
+    "mathlive": "0.110.0"
+  },
+  "devDependencies": {
+    "playwright": "1.62.1"
+  }
+}
