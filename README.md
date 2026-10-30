@@ -1,6 +1,22 @@
 # ProgressPoint
 
-A working tutoring workspace with a reusable question bank, assignments, independent practice, shared SQLite storage, and separate tutor, student, and read-only parent views. The domain is deliberately a placeholder.
+**Thoughtful practice. Measurable progress.**
+
+ProgressPoint is a self-hosted tutoring website that helps tutors reuse questions, assign targeted practice, and track how students improve over time. Instead of creating a new worksheet for every request, tutors maintain a shared question bank and build assignments around the skills each learner needs to practice.
+
+Questions can belong to multiple topics and courses—for example, Factoring, Algebra I, SAT, and GED—and carry difficulty and response-format tags. Students can complete assigned sets or practice independently, while parents have a separate read-only view of their child's progress.
+
+## A typical tutoring workflow
+
+1. **Build your question bank.** Create questions or import question JSON, including answers, explanations, and topic/course tags.
+2. **Add a student.** Use only a first name or nickname, then share separate private links with the student and parent.
+3. **Assign purposeful practice.** Select tags and a problem count, choose unseen questions, or revisit problems below a chosen accuracy threshold, such as 65%.
+4. **Review progress.** Compare performance over time, by assignment, and by topic, with attempt counts and pending grades visible.
+5. **Extend practice when needed.** Optionally connect an LLM to generate additional questions and grade writing against a rubric.
+
+The core app runs without an LLM key. It uses Node.js, SQLite, vanilla JavaScript, MathLive for math entry, and Compute Engine for supported math comparisons. This is currently a single-tutor workspace; hosting and a production domain are not included.
+
+[Local setup](#run-locally) · [Features](#what-works) · [Assignments](#building-assignments) · [Optional AI setup](#llm-setup) · [Data and privacy](#data-and-grading-details) · [Deployment guide](DEPLOYMENT.md)
 
 ## Run locally
 
@@ -13,9 +29,6 @@ pnpm start
 ```
 
 Open **http://localhost:3000**. On first launch, the private tutor link is written to **.data/tutor-access.txt**. Open that link to manage your workspace. Do not share the tutor link with students or parents.
-
-On this Windows workspace, pnpm is also available at:
-`C:\Users\natha\.cache\codex-runtimes\codex-primary-runtime\dependencies\bin\fallback\pnpm.cmd`.
 
 No API key or external database is required for the core app. The first run adds **27 original starter math questions** and no student profiles or fabricated performance records.
 
@@ -49,7 +62,7 @@ Use **Explore questions & student history** to inspect seen/unseen labels and sc
 
 Preview before assigning. Shortages are shown per student and block creation until you adjust the filters or count. A set can contain up to 100 problems. Previews last 15 minutes; changes to selected questions or their student history require a fresh preview. Creating a set preserves exactly the questions in its preview.
 
-Worksheet ingestion is currently assisted: provide worksheets and answer keys in the chat for extraction and review, then import the resulting question JSON through the question bank. There is no automatic PDF/Word uploader in the website yet. Missing keys, ambiguous notation, and diagram-dependent questions need review before import.
+Existing worksheets and answer keys can be converted into question JSON with assistance, reviewed, and imported through the question bank. There is no automatic PDF/Word uploader in the website yet. Missing keys, ambiguous notation, and diagram-dependent questions need review before import.
 
 ## LLM setup
 
